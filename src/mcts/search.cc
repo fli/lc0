@@ -48,7 +48,7 @@ namespace {
 const int kSmartPruningToleranceNodes = 300;
 const int kSmartPruningToleranceMs = 200;
 // Maximum delay between outputting "uci info" when nothing interesting happens.
-const int kUciInfoMinimumFrequencyMs = 5000;
+const int kUciInfoMinimumFrequencyMs = 1;
 }  // namespace
 
 std::string SearchLimits::DebugString() const {
@@ -112,7 +112,7 @@ void Search::SendUciInfo() REQUIRES(nodes_mutex_) {
   common_info.depth = cum_depth_ / (total_playouts_ ? total_playouts_ : 1);
   common_info.seldepth = max_depth_;
   common_info.time = GetTimeSinceStart();
-  common_info.nodes = total_playouts_ + initial_visits_;
+  common_info.nodes = total_playouts_;
   common_info.hashfull =
       cache_->GetSize() * 1000LL / std::max(cache_->GetCapacity(), 1);
   common_info.nps =
